@@ -27,12 +27,13 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// 5. Entorno de desarrollo y Swagger
-if (app.Environment.IsDevelopment())
+// 5. Swagger habilitado globalmente (para que lo veas al abrir tu URL de Render)
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agenda Backend V1");
+    c.RoutePrefix = string.Empty; // Esto hace que Swagger abra directamente en la página principal de tu link de Render
+});
 
 app.UseHttpsRedirection();
 
@@ -44,9 +45,8 @@ app.UseAuthorization();
 // 7. Enlazar controladores
 app.MapControllers();
 
-app.Run();
+// 8. Configuración del puerto dinámico para Render (¡Soluciona el error 139!)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Urls.Add($"http://*:{port}");
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+app.Run();
