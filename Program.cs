@@ -3,6 +3,9 @@ using AgendaBackend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Cargar variables de entorno del sistema explícitamente
+builder.Configuration.AddEnvironmentVariables();
+
 // 1. Configuraciones de la API y Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -11,10 +14,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers(); 
 
 // 3. Conexión a la base de datos PostgreSQL
-builder.Services.AddDbContext<AgendaContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? builder.Configuration["DefaultConnection"] 
+    ?? Environment.GetEnvironmentVariable("DefaultConnection");
 
-// 4. Configuración de CORS permitiendo explícitamente a Vercel
+builder.Services.AddDbContext<AgendaContext>(options =>
+    options.UseNpgsql(connectionString));
+
+// 4. Configuración de CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -35,7 +42,6 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
-// Sin HttpsRedirection para evitar choques con el proxy de Render
 // 6. Activar CORS
 app.UseCors("AllowAll");
 
