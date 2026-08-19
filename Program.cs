@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AgendaContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 4. Configuración de CORS (permite conexiones desde Angular sin bloqueos)
+// 4. Configuración de CORS permitiendo explícitamente a Vercel
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -27,26 +27,21 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// 5. Swagger habilitado globalmente (para que lo veas al abrir tu URL de Render)
+// 5. Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agenda Backend V1");
-    c.RoutePrefix = string.Empty; // Esto hace que Swagger abra directamente en la página principal de tu link de Render
+    c.RoutePrefix = string.Empty;
 });
 
-//app.UseHttpsRedirection();
-
-// 6. Activar CORS (Debe ir estrictamente antes de MapControllers)
+// Sin HttpsRedirection para evitar choques con el proxy de Render
+// 6. Activar CORS
 app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
 // 7. Enlazar controladores
 app.MapControllers();
-
-// 8. Configuración del puerto dinámico para Render (¡Soluciona el error 139!)
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Urls.Add($"http://*:{port}");
 
 app.Run();
