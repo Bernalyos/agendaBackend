@@ -25,18 +25,11 @@ app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
 
-// Protegemos el inicio para que un fallo de red con Neon no mate el servidor
-try
+// RUTA DE SEGURIDAD: Esto crea las tablas manualmente si no existen
+app.MapGet("/creartablas", (AgendaContext db) =>
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<AgendaContext>();
-        db.Database.EnsureCreated();
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Aviso de base de datos: {ex.Message}");
-}
+    db.Database.EnsureCreated();
+    return "¡Tablas creadas con exito! La base de datos esta lista.";
+});
 
 app.Run();
