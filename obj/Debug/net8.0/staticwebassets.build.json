@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "bb5yWwlFhnRPjm28mqTYV3AvT9R9kXMQDzxxLDQsBXo=",
+  "Source": "AgendaBackend",
+  "BasePath": "_content/AgendaBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
