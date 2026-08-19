@@ -3,59 +3,33 @@ using AgendaBackend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Cargar variables de entorno del sistema explícitamente
-builder.Configuration.AddEnvironmentVariables();
-
-// 1. Configuraciones de la API y Swagger
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// 2. Controladores
-builder.Services.AddControllers(); 
-
-// 3. Conexión a la base de datos PostgreSQL
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? builder.Configuration["DefaultConnection"] 
-    ?? Environment.GetEnvironmentVariable("DefaultConnection");
-
+// Conexión a la base de datos
 builder.Services.AddDbContext<AgendaContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection")));
 
-// 4. Configuración de CORS
+// CORS abierto para Vercel
 builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
+    options.AddPolicy("AllowAll", policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 var app = builder.Build();
 
-// 5. Swagger
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agenda Backend V1");
-    c.RoutePrefix = string.Empty;
-});
+app.UseSwaggerUI();
 
-// 6. Activar CORS
 app.UseCors("AllowAll");
-
 app.UseAuthorization();
-
-// 7. Enlazar controladores
 app.MapControllers();
 
-// Aplicar migraciones automáticamente al iniciar en la nube
+// Crear tablas automáticamente de forma segura sin causar errores en Render
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AgendaContext>();
-    context.Database.Migrate();
+    context.Database.EnsureCreated();
 }
 
 app.Run();
