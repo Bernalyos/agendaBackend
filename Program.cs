@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using AgendaBackend.Data;
 
-var builder = WebApplication.CreateBuilder();
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -25,10 +25,18 @@ app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+// Protegemos el inicio para que un fallo de red con Neon no mate el servidor
+try
 {
-    var db = scope.ServiceProvider.GetRequiredService<AgendaContext>();
-    db.Database.EnsureCreated();
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AgendaContext>();
+        db.Database.EnsureCreated();
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Aviso de base de datos: {ex.Message}");
 }
 
-app.Run("http://0.0.0.0:8080");
+app.Run();
