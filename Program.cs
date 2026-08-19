@@ -50,4 +50,12 @@ app.UseAuthorization();
 // 7. Enlazar controladores
 app.MapControllers();
 
+// Aplicar migraciones automáticamente al iniciar en la nube
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AgendaContext>();
+    context.Database.Migrate();
+}
+
 app.Run();
