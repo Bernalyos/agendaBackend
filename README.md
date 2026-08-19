@@ -7,7 +7,7 @@ REST API developed in C# with .NET 8 and PostgreSQL, designed under a clean laye
 ## 🚀 Enlaces en Producción (Demo en Vivo)
 * **Frontend (Vercel):** [Ver Aplicación en Vivo](https://phonebook-frontend-amber.vercel.app)
 * **Backend API (Render):** [Documentación Swagger / API](https://agendabackend-p9qp.onrender.com/swagger/index.html)
-⚠️ **Note on Deployment (Render Free Tier):**
+* ⚠️ **Note on Deployment (Render Free Tier):**
   The backend service is hosted on Render's free tier. If the server has been inactive, the initial request may take 30 to 40 seconds to spin up. If the application takes a brief moment to respond on the first load, please allow a few seconds for the server to wake from sleep mode.
 
 ---
