@@ -1,29 +1,34 @@
-# 📖 PhoneBook API - Backend (.NET 8) & Full-Stack Overview
+# 📖 PhoneBook API - Backend (.NET 8)
 
 REST API developed in C# with .NET 8 and PostgreSQL, designed under a clean layered architecture (separation of responsibilities via DTOs, Controllers, and Service Pattern) for efficient contact management.
 
 ---
 
+## 🚀 Enlaces en Producción (Demo en Vivo)
+* **Frontend (Vercel):** [Ver Aplicación en Vivo](https://phonebook-frontend-amber.vercel.app)
+* **Backend API (Render):** [Documentación Swagger / API](https://agendabackend-p9qp.onrender.com/swagger/index.html)
+
+---
+
 ## 📌 Project Overview & Functionality
 
-**PhoneBook** is a web-based contact management application developed as part of a technical competency test. It provides a complete solution to store, search, filter, and manage different types of contacts with distinct attributes.
+**PhoneBook** is a web-based contact management application backend developed as part of a technical competency test. It provides a complete RESTful solution to store, search, filter, and manage different types of contacts with distinct attributes.
 
 ### Core Features:
 * **Multi-Type Contact Management:** Supports **Person**, **Public Organization**, and **Private Organization** contacts.
-* **Dynamic & Custom Fields:** Displays standard information (Name, Phone, Comments) alongside specialized fields unique to each contact type (e.g., Company Name, Tax ID, Position).
-* **Interactive Filtering:** Allows users to filter the contact list by any combination of contact types in real-time.
+* **Dynamic & Custom Fields:** Handles standard information (Name, Phone, Comments) alongside specialized fields unique to each contact type (e.g., Company Name, Tax ID, Position).
+* **Interactive Filtering Support:** Endpoints ready to filter the contact list by contact types in real-time.
 * **Full CRUD Operations:** Comprehensive endpoints to Create, Read, Update, and Delete contacts.
-* 
+
+---
+
 ## 🏗️ Architecture & Technologies Used
 
 ### Backend (.NET)
 * **.NET 8 (ASP.NET Core Web API):** Main framework for building robust, high-performance web services.
 * **Entity Framework Core (ORM):** Object-relational mapping for data persistence and management.
-* **PostgreSQL:** Relational database for secure contact storage.
+* **PostgreSQL:** Relational database for secure contact storage (Cloud database hosted on Neon).
 * **Swagger / OpenAPI:** Tool for interactive API documentation and endpoint testing.
-
-### Frontend (Angular)
-* **Important Repository Note:** The source code for the client-side (Frontend) developed in **Angular** is hosted on the **`AgendaFrontend`** branch of this same repository. Make sure to switch branches if you want to review the graphical interface.
 
 ---
 
@@ -58,19 +63,31 @@ Make sure you have the following installed in your local environment:
 ### 1. Clone the Repository
 Open your terminal and run the following commands:
 ```bash
-git clone [https://github.com/Bernalyos/phoneBook.git](https://github.com/Bernalyos/phoneBook.git)
+git clone https://github.com/Bernalyos/phoneBook.git
 cd phoneBook/AgendaBackend
 ```
 
 ### 2. Configure the Database
-* Create a database in your local PostgreSQL with the name **`PhoneBook`**.
-* Open the `appsettings.json` file and configure your own connection string by replacing `tu_contraseña_aqui` with your local PostgreSQL password:
-  ```json
-  "DefaultConnection": "Host=localhost;Port=5432;Database=PhoneBook;Username=postgres;Password=tu_contraseña_aqui"
-  ```
+* Create a database in your local PostgreSQL with the name **`PhoneBook`** (or your preferred name).
+* Open the `appsettings.json` file and configure your connection string by replacing `tu_contraseña_aqui` with your local PostgreSQL password:
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=PhoneBook;Username=postgres;Password=tu_contraseña_aqui"
+  }
+}
+```
 
 ### 3. Run and Start the Backend
-Restore dependencies and start the server using the run command:
+Restore dependencies and start the server using the run commands in your terminal:
 ```bash
 dotnet restore
 dotnet run
@@ -78,22 +95,6 @@ dotnet run
 *(You can also use `dotnet watch run` if you prefer the server to automatically restart upon any code changes).*
 
 ### 4. Interactive Documentation (Swagger)
-Once the server is running, open the following link in your browser to interact with the live API and test the CRUD endpoints:
+Once the server is running locally, open the following link in your browser to interact with the API and test the CRUD endpoints:
 
-👉 **[Swagger UI - API Documentation](http://localhost:5117/swagger/index.html)** *(or check the exact HTTP/HTTPS port displayed in your console upon startup)*.
-
----
-
-## 💻 How to View the Frontend?
-If you wish to evaluate the user interface in Angular:
-1. Switch to the frontend branch in your terminal:
-   ```bash
-   git checkout AgendaFrontend
-   ```
-2. Install dependencies and run the client project:
-   ```bash
-   cd AgendaFrontend
-   npm install
-   ng serve
-   ```
-3. Open `http://localhost:4200` in your web browser.
+👉 **[Swagger UI - Local API](http://localhost:5117/swagger/index.html)** *(or check the exact HTTP/HTTPS port displayed in your console upon startup)*.
