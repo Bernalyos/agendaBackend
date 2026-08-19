@@ -35,7 +35,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty; // Esto hace que Swagger abra directamente en la página principal de tu link de Render
 });
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // 6. Activar CORS (Debe ir estrictamente antes de MapControllers)
 app.UseCors("AllowAll");
