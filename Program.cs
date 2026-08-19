@@ -26,11 +26,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 // RUTA DE SEGURIDAD: Esto crea las tablas manualmente si no existen
-// Crea las tablas en Neon automáticamente al encender
-using (var scope = app.Services.CreateScope())
+app.MapGet("/creartablas", (AgendaContext db) =>
 {
-    var db = scope.ServiceProvider.GetRequiredService<AgendaContext>();
     db.Database.EnsureCreated();
-}
+    return "¡Tablas creadas con exito! La base de datos esta lista.";
+});
 
 app.Run();
