@@ -28,15 +28,8 @@ app.MapControllers();
 // RUTA DE SEGURIDAD: Esto crea las tablas manualmente si no existen
 app.MapGet("/creartablas", (AgendaContext db) =>
 {
-    try
-    {
-        db.Database.EnsureCreated();
-        return Results.Ok("¡Tablas creadas con exito! La base de datos esta lista.");
-    }
-    catch (Exception ex)
-    {
-        return Results.Content($"ERROR EXACTO: {ex.Message} --- DETALLE: {ex.InnerException?.Message}", "text/plain");
-    }
+    db.Database.EnsureCreated();
+    return "¡Tablas creadas con exito! La base de datos esta lista.";
 });
 
 app.Run();
