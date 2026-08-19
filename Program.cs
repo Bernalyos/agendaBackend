@@ -25,11 +25,5 @@ app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
 
-// RUTA DE SEGURIDAD: Esto crea las tablas manualmente si no existen
-app.MapGet("/creartablas", (AgendaContext db) =>
-{
-    db.Database.EnsureCreated();
-    return "¡Tablas creadas con exito! La base de datos esta lista.";
-});
 
 app.Run();
